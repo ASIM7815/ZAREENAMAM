@@ -1,0 +1,21 @@
+{
+  "name": "Prof. Dr. Zareena Sultana",
+  "short_name": "ZareenaSultana",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#8B4513",
+  "description": "Portfolio of Prof. Dr. Zareena Sultana - Award-winning educator, author, and human rights advocate.",
+  "icons": [
+    {
+      "src": "images/profile.jpg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/profile.jpg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
