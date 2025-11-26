@@ -678,6 +678,7 @@ console.log('%c🎓 Prof. Dr. Zareena Sultana Portfolio', 'color: #8B4513; font-
 console.log('%cTransforming Education, Empowering Lives', 'color: #CD853F; font-size: 14px;');
 console.log('%cWebsite developed with ❤️', 'color: #800020; font-size: 12px;');
 
+
 // ===== EASTER EGG =====
 let clickCount = 0;
 const logo = document.querySelector('.logo-text');
@@ -692,11 +693,151 @@ if (logo) {
     });
 }
 
+// ===== GALLERY SHOW MORE FUNCTIONALITY =====
+const showMoreBtn = document.getElementById('showMoreBtn');
+const hiddenGalleryItems = document.querySelectorAll('.hidden-gallery-item');
+
+if (showMoreBtn) {
+    showMoreBtn.addEventListener('click', () => {
+        const isActive = showMoreBtn.classList.contains('active');
+        
+        if (!isActive) {
+            // Show hidden items
+            hiddenGalleryItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('show');
+                }, index * 100); // Stagger animation
+            });
+            showMoreBtn.classList.add('active');
+            showMoreBtn.querySelector('.btn-text').textContent = 'Show Less';
+            
+            // Smooth scroll to show new items
+            setTimeout(() => {
+                const firstHiddenItem = document.querySelector('.hidden-gallery-item.show');
+                if (firstHiddenItem) {
+                    firstHiddenItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 300);
+        } else {
+            // Hide items
+            hiddenGalleryItems.forEach(item => {
+                item.classList.remove('show');
+            });
+            showMoreBtn.classList.remove('active');
+            showMoreBtn.querySelector('.btn-text').textContent = 'Show More';
+            
+            // Scroll back to gallery section
+            setTimeout(() => {
+                document.getElementById('gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+    });
+}
+
+// ===== VIDEO PLAYER FUNCTIONALITY =====
+const playOverlay = document.getElementById('playOverlay');
+const videoFrame = document.getElementById('videoFrame');
+const videoIframe = document.getElementById('videoIframe');
+
+if (playOverlay && videoFrame) {
+    // Hide play overlay when clicked
+    playOverlay.addEventListener('click', () => {
+        playOverlay.classList.add('hidden');
+        
+        // Try to autoplay the video (works for some embeds)
+        // For Facebook embeds, the user will click the play button in the iframe
+    });
+    
+    // Also hide overlay when clicking anywhere on the video frame
+    videoFrame.addEventListener('click', () => {
+        setTimeout(() => {
+            playOverlay.classList.add('hidden');
+        }, 300);
+    });
+    
+    // Hide overlay when video frame is interacted with (fallback)
+    if (videoIframe) {
+        videoIframe.addEventListener('load', () => {
+            // Listen for any interaction with the iframe
+            window.addEventListener('blur', () => {
+                if (document.activeElement === videoIframe) {
+                    setTimeout(() => {
+                        playOverlay.classList.add('hidden');
+                    }, 500);
+                }
+            });
+        });
+    }
+}
+
 // ===== DYNAMIC YEAR UPDATE =====
 const currentYearElements = document.querySelectorAll('.current-year');
 currentYearElements.forEach(element => {
     element.textContent = new Date().getFullYear();
 });
+
+// ===== CONTACT FORM WHATSAPP REDIRECT =====
+const contactForm = document.getElementById('contact-form');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const subject = document.getElementById('subject').value.trim();
+        const message = document.getElementById('message').value.trim();
+        
+        // Validate all fields are filled
+        if (!name || !email || !subject || !message) {
+            alert('⚠️ Please fill in all fields before submitting.');
+            return;
+        }
+        
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('⚠️ Please enter a valid email address.');
+            return;
+        }
+        
+        // Create WhatsApp message
+        const whatsappMessage = `Hello! I'm ${name}
+
+📧 Email: ${email}
+📌 Subject: ${subject}
+
+💬 Message:
+${message}`;
+        
+        // WhatsApp number (without + symbol for URL)
+        const whatsappNumber = '919963884159';
+        
+        // Create WhatsApp URL - use api.whatsapp.com for better compatibility
+        const whatsappURL = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent(whatsappMessage)}`;
+        
+        // Show success message first
+        alert('✅ Thank you! Redirecting you to WhatsApp...');
+        
+        // Small delay to ensure alert is shown
+        setTimeout(() => {
+            // Try to open WhatsApp
+            const whatsappWindow = window.open(whatsappURL, '_blank');
+            
+            // Fallback: If popup was blocked, redirect in same window
+            if (!whatsappWindow || whatsappWindow.closed || typeof whatsappWindow.closed === 'undefined') {
+                // Popup blocked, use direct redirect
+                window.location.href = whatsappURL;
+            }
+        }, 500);
+        
+        // Reset form after a short delay
+        setTimeout(() => {
+            contactForm.reset();
+        }, 1000);
+    });
+}
 
 // ===== INITIALIZE ALL FUNCTIONS =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -704,3 +845,5 @@ document.addEventListener('DOMContentLoaded', () => {
     highlightNavigation();
     adjustForMobile();
 });
+
+
