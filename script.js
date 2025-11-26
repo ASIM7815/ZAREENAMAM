@@ -415,30 +415,6 @@ if (heroSection) {
     heroObserver.observe(heroSection);
 }
 
-// ===== FORM SUBMISSION HANDLING =====
-const contactForm = document.getElementById('contact-form');
-
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Get form data
-    const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        subject: document.getElementById('subject').value,
-        message: document.getElementById('message').value
-    };
-    
-    // Simulate form submission (replace with actual backend call)
-    console.log('Form submitted:', formData);
-    
-    // Show success message
-    alert('Thank you for your message! Dr. Zareena Sultana will get back to you soon.');
-    
-    // Reset form
-    contactForm.reset();
-});
-
 // ===== PARALLAX EFFECT FOR HERO SECTION =====
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
@@ -542,51 +518,7 @@ function revealNumbers() {
     });
 }
 
-// ===== SEARCH FUNCTIONALITY (OPTIONAL) =====
-function searchContent(query) {
-    const searchableElements = document.querySelectorAll('section p, section h3, section h4, section li');
-    let results = [];
-    
-    searchableElements.forEach(element => {
-        if (element.textContent.toLowerCase().includes(query.toLowerCase())) {
-            results.push(element);
-        }
-    });
-    
-    return results;
-}
-
-// ===== TOOLTIP FUNCTIONALITY =====
-const tooltipElements = document.querySelectorAll('[data-tooltip]');
-
-tooltipElements.forEach(element => {
-    element.addEventListener('mouseenter', function() {
-        const tooltip = document.createElement('div');
-        tooltip.className = 'tooltip';
-        tooltip.textContent = this.getAttribute('data-tooltip');
-        document.body.appendChild(tooltip);
-        
-        const rect = this.getBoundingClientRect();
-        tooltip.style.position = 'absolute';
-        tooltip.style.top = `${rect.top - tooltip.offsetHeight - 10}px`;
-        tooltip.style.left = `${rect.left + rect.width / 2 - tooltip.offsetWidth / 2}px`;
-        tooltip.style.background = 'rgba(0, 0, 0, 0.8)';
-        tooltip.style.color = 'white';
-        tooltip.style.padding = '8px 12px';
-        tooltip.style.borderRadius = '6px';
-        tooltip.style.fontSize = '14px';
-        tooltip.style.zIndex = '10000';
-    });
-    
-    element.addEventListener('mouseleave', function() {
-        const tooltip = document.querySelector('.tooltip');
-        if (tooltip) {
-            tooltip.remove();
-        }
-    });
-});
-
-// ===== BACK TO TOP SMOOTH SCROLL =====
+// ===== TOOLTIP FUNCTIONALITY =========
 document.querySelectorAll('.scroll-to-top').forEach(button => {
     button.addEventListener('click', () => {
         window.scrollTo({
@@ -595,28 +527,6 @@ document.querySelectorAll('.scroll-to-top').forEach(button => {
         });
     });
 });
-
-// ===== SOCIAL SHARE FUNCTIONALITY =====
-function shareOnSocialMedia(platform) {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(document.title);
-    
-    const shareUrls = {
-        facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-        twitter: `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
-        linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-        whatsapp: `https://wa.me/?text=${title}%20${url}`
-    };
-    
-    if (shareUrls[platform]) {
-        window.open(shareUrls[platform], '_blank', 'width=600,height=400');
-    }
-}
-
-// ===== PRINT FUNCTIONALITY =====
-function printPage() {
-    window.print();
-}
 
 // ===== RESPONSIVE ADJUSTMENTS =====
 function adjustForMobile() {
@@ -630,17 +540,6 @@ function adjustForMobile() {
 
 window.addEventListener('resize', adjustForMobile);
 adjustForMobile();
-
-// ===== PRELOADER (OPTIONAL) =====
-window.addEventListener('load', () => {
-    const preloader = document.querySelector('.preloader');
-    if (preloader) {
-        preloader.style.opacity = '0';
-        setTimeout(() => {
-            preloader.style.display = 'none';
-        }, 500);
-    }
-});
 
 // ===== ACCESSIBILITY ENHANCEMENTS =====
 // Add focus visible for keyboard navigation
@@ -679,16 +578,43 @@ console.log('%cTransforming Education, Empowering Lives', 'color: #CD853F; font-
 console.log('%cWebsite developed with ❤️', 'color: #800020; font-size: 12px;');
 
 
-// ===== EASTER EGG =====
-let clickCount = 0;
-const logo = document.querySelector('.logo-text');
+// ===== GALLERY SHOW MORE FUNCTIONALITY =====
+const showMoreBtn = document.getElementById('showMoreBtn');
+const hiddenGalleryItems = document.querySelectorAll('.hidden-gallery-item');
 
-if (logo) {
-    logo.addEventListener('click', () => {
-        clickCount++;
-        if (clickCount === 5) {
-            alert('🌟 Thank you for exploring Dr. Zareena Sultana\'s journey! 🌟');
-            clickCount = 0;
+if (showMoreBtn) {
+    showMoreBtn.addEventListener('click', () => {
+        const isActive = showMoreBtn.classList.contains('active');
+        
+        if (!isActive) {
+            // Show hidden items
+            hiddenGalleryItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('show');
+                }, index * 100); // Stagger animation
+            });
+            showMoreBtn.classList.add('active');
+            showMoreBtn.querySelector('.btn-text').textContent = 'Show Less';
+            
+            // Smooth scroll to show new items
+            setTimeout(() => {
+                const firstHiddenItem = document.querySelector('.hidden-gallery-item.show');
+                if (firstHiddenItem) {
+                    firstHiddenItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 300);
+        } else {
+            // Hide items
+            hiddenGalleryItems.forEach(item => {
+                item.classList.remove('show');
+            });
+            showMoreBtn.classList.remove('active');
+            showMoreBtn.querySelector('.btn-text').textContent = 'Show More';
+            
+            // Scroll back to gallery section
+            setTimeout(() => {
+                document.getElementById('gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
         }
     });
 }
@@ -701,19 +627,46 @@ currentYearElements.forEach(element => {
 
 // ===== INITIALIZE ALL FUNCTIONS =====
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Portfolio website loaded successfully!');
     highlightNavigation();
     adjustForMobile();
     
-    // Initialize AOS (Animate On Scroll) library
+    // Initialize AOS (Animate On Scroll) library with enhanced settings
     if (typeof AOS !== 'undefined') {
         AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
+            duration: 1000,
+            easing: 'ease-out-cubic',
             once: true,
-            offset: 100
+            offset: 120,
+            delay: 100,
+            anchorPlacement: 'top-bottom',
+            disable: false,
+            startEvent: 'DOMContentLoaded',
+            initClassName: 'aos-init',
+            animatedClassName: 'aos-animate',
+            useClassNames: false,
+            disableMutationObserver: false,
+            throttleDelay: 99,
+            debounceDelay: 50
         });
+        
+        // Refresh AOS for gallery items after page load
+        setTimeout(() => {
+            AOS.refresh();
+        }, 500);
     }
+    
+    // Add entrance animation for gallery items
+    const galleryItems = document.querySelectorAll('.gallery-item:not(.hidden-gallery-item)');
+    galleryItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            item.style.transition = 'opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
+        }, 100 + (index * 100));
+    });
 });
 
 
