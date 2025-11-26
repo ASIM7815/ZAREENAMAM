@@ -803,7 +803,9 @@ if (contactForm) {
         }
         
         // Create WhatsApp message
-        const whatsappMessage = `Hello! I'm ${name}
+        const whatsappMessage = `Hello Dr. Zareena Sultana,
+
+I'm ${name}
 
 📧 Email: ${email}
 📌 Subject: ${subject}
@@ -827,7 +829,6 @@ ${message}`;
             
             // Fallback: If popup was blocked, redirect in same window
             if (!whatsappWindow || whatsappWindow.closed || typeof whatsappWindow.closed === 'undefined') {
-                // Popup blocked, use direct redirect
                 window.location.href = whatsappURL;
             }
         }, 500);
@@ -844,6 +845,18 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Portfolio website loaded successfully!');
     highlightNavigation();
     adjustForMobile();
+    
+    // Initialize AOS (Animate On Scroll) library
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+    }
 });
+
+
 
 
