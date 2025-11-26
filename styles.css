@@ -1632,10 +1632,18 @@ ul {
 }
 
 .footer-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
     margin-bottom: 30px;
+    text-align: center;
+}
+
+.footer-info {
+    width: 100%;
+    text-align: center;
 }
 
 .footer-info h3 {
@@ -1653,6 +1661,54 @@ ul {
     font-size: 14px;
 }
 
+.developer-credit {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 25px;
+    line-height: 1.8;
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.1) 0%, rgba(222, 184, 135, 0.1) 100%);
+    border-radius: 12px;
+    border: 2px solid rgba(222, 184, 135, 0.3);
+}
+
+.developer-name {
+    display: inline-block;
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24, #ff6b6b);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: genZGradient 3s ease infinite, genZFloat 2s ease-in-out infinite;
+    letter-spacing: 2px;
+    margin: 10px 0;
+    filter: drop-shadow(0 0 10px rgba(78, 205, 196, 0.6));
+}
+
+@keyframes genZGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes genZFloat {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-5px) scale(1.05); }
+}
+
+.footer-links,
+.footer-social {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
 .footer-links h4,
 .footer-social h4 {
     font-size: 18px;
@@ -1660,8 +1716,10 @@ ul {
 }
 
 .footer-links ul {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     gap: 12px;
+    justify-content: center;
 }
 
 .footer-links a {
@@ -1678,6 +1736,7 @@ ul {
 .footer-social .social-icons {
     display: flex;
     gap: 15px;
+    justify-content: center;
 }
 
 .footer-social .social-icons a {
